@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String       @id @unique
+  email       String       @unique
+  password    String
+  credentials Credential[]
+  notes       Note[]
+  cards       Card[]
+}
+
+model Credential {
+  id       Int     @id @default(autoincrement())
+  title    String
+  url      String?
+  username String?
+  password String
+  userId   String  @map("user_id")
+  user     User    @relation(fields: [userId], references: [id])
+}
+
+model Note {
+  id      Int     @id @default(autoincrement())
+  title   String
+  content String?
+  userId  String  @map("user_id")
+  user    User    @relation(fields: [userId], references: [id])
+}
+
+model Card {
+  id           Int     @id @default(autoincrement())
+  title        String
+  cardNumber   String
+  cardName     String
+  securityCode String
+  expiration   String
+  virtual      Boolean
+  cardType     String
+  userId       String  @map("user_id")
+  user         User    @relation(fields: [userId], references: [id])
+}
