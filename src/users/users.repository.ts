@@ -5,17 +5,16 @@ import { PrismaService } from '../prisma/prisma.service';
 export class UsersRepository {
     constructor(private readonly prisma: PrismaService) { }
 
-    async create(email: string, password: string, id: string){
+    async create(email: string, password: string) {
         return this.prisma.user.create({
             data: {
                 email,
                 password,
-                id,
             },
         });
     }
 
-    async findByEmail(email: string){
+    async findByEmail(email: string) {
         return this.prisma.user.findUnique({
             where: {
                 email,
@@ -23,7 +22,7 @@ export class UsersRepository {
         });
     }
 
-    async findAll(){
+    async findAll() {
         return this.prisma.user.findMany();
     }
 }
